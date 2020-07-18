@@ -18,6 +18,9 @@ spec:
       annotations:
         # This lets us autorestart when the configmap changes!
         checksum/config-map: {{ include (print $.Template.BasePath "/scheduling/user-scheduler/configmap.yaml") . | sha256sum }}
+        {{- if .Values.scheduling.userScheduler.annotations }}
+        {{- .Values.scheduling.userScheduler.annotations | toYaml | trimSuffix "\n" | nindent 8 }}
+        {{- end }}
     spec:
       {{- if .Values.rbac.enabled }}
       serviceAccountName: user-scheduler
